@@ -4,23 +4,21 @@ import { dirname, fromFileUrl, join } from "@std/path";
 
 const puzzleDir = dirname(fromFileUrl(import.meta.url));
 
-const getExampleLists = async () => {
-  const example = await Deno.readTextFile(
-    join(puzzleDir, "example.txt"),
-  );
+const readPuzzleFile = async (fileName: string): Promise<string> => {
+  return await Deno.readTextFile(join(puzzleDir, fileName));
+};
 
+const getExampleLists = async () => {
+  const example = await readPuzzleFile("example.txt");
   return parseInput(example);
 };
 
 const getInputLists = async () => {
-  const input = await Deno.readTextFile(
-    join(puzzleDir, "input.txt"),
-  );
-
+  const input = await readPuzzleFile("input.txt");
   return parseInput(input);
 };
 
-Deno.test("parses part 1 example input", async () => {
+Deno.test("parses part 1 example", async () => {
   const [leftList, rightList] = await getExampleLists();
 
   assertEquals(leftList, [3, 4, 2, 1, 3, 3]);
