@@ -1,5 +1,9 @@
 import { assertEquals } from "@std/assert/equals";
-import { calculateSimilarityScore, calculateTotalDistanceBetweenLists, parseInput } from "./index.ts";
+import {
+  calculateSimilarityScore,
+  calculateTotalDistanceBetweenLists,
+  parseInput,
+} from "./index.ts";
 import { dirname, fromFileUrl, join } from "@std/path";
 
 const puzzleDir = dirname(fromFileUrl(import.meta.url));

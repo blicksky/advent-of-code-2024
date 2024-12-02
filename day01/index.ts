@@ -1,14 +1,13 @@
 export function parseInput(input: string): [number[], number[]] {
-  const lines = input.trim().split("\n");
-
   const leftList: number[] = [];
   const rightList: number[] = [];
 
-  for (const line of lines) {
+  input.trim().split("\n").forEach((line) => {
     const [left, right] = line.trim().split(/\s+/).map(Number);
+
     leftList.push(left);
     rightList.push(right);
-  }
+  });
 
   return [leftList, rightList];
 }
@@ -42,7 +41,7 @@ export function calculateSimilarityScore(
   const rightOccurrenceMap = buildOccurrenceMap(rightList);
 
   return leftList.reduce((totalScore, item) => {
-    const score = item * (rightOccurrenceMap.get(item) ?? 0)
+    const score = item * (rightOccurrenceMap.get(item) ?? 0);
     return totalScore + score;
   }, 0);
 }
