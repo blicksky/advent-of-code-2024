@@ -10,6 +10,12 @@ export function executeCorruptedProgram(program: string) {
           return parseInt(operand, 10);
         });
       return operand1 * operand2;
-    })
-    .reduce((a, b) => a + b);
+    });
+}
+
+export function removeDisabledInstructions(program: string) {
+  return program
+    .split(/do\(\)/gs)
+    .map((s) => s.replace(/don't\(\).*/gs, ""))
+    .join("");
 }
