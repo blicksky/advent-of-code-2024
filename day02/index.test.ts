@@ -1,5 +1,10 @@
 import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
-import { isReportSafe, parseInput } from "./index.ts";
+import {
+  countBadLevels,
+  isReportSafe,
+  isReportSafeWithDampener,
+  parseInput,
+} from "./index.ts";
 import { dirname } from "@std/path/dirname";
 import { fromFileUrl } from "@std/path/from-file-url";
 import { join } from "@std/path/join";
@@ -28,11 +33,35 @@ Deno.test("parseInput parses example input", async () => {
 Deno.test("isReportSafe correctly identifies safe reports in example input", async () => {
   const input = await readPuzzleFile("example.txt");
 
-  assertEquals(parseInput(input).filter(isReportSafe).length, 2);
+  const safeReportCount = parseInput(input).filter(isReportSafe).length;
+  assertEquals(safeReportCount, 2);
 });
 
 Deno.test("isReportSafe correctly identifies safe reports in input", async () => {
   const input = await readPuzzleFile("input.txt");
 
-  assertEquals(parseInput(input).filter(isReportSafe).length, 411);
+  const safeReportCount = parseInput(input).filter(isReportSafe).length;
+  assertEquals(safeReportCount, 411);
 });
+
+Deno.test(
+  "isReportSafeWithDampener correctly identifies safe reports in example input",
+  async () => {
+    const input = await readPuzzleFile("example.txt");
+
+    const safeReportCount = parseInput(input).filter(isReportSafeWithDampener)
+      .length;
+    assertEquals(safeReportCount, 4);
+  },
+);
+
+Deno.test(
+  "isReportSafeWithDampener correctly identifies safe reports in input",
+  async () => {
+    const input = await readPuzzleFile("input.txt");
+
+    const safeReportCount = parseInput(input).filter(isReportSafeWithDampener)
+      .length;
+    assertEquals(safeReportCount, 465);
+  },
+);

@@ -22,3 +22,8 @@ export function isReportSafe(report: number[]): boolean {
     return 1 <= difference && difference <= 3;
   });
 }
+
+export function isReportSafeWithDampener(report: number[]): boolean {
+  return isReportSafe(report) ||
+    report.some((_, index) => isReportSafe(report.toSpliced(index, 1)));
+}
