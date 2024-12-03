@@ -1,10 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
-import {
-  countBadLevels,
-  isReportSafe,
-  isReportSafeWithDampener,
-  parseInput,
-} from "./index.ts";
+import { isReportSafe, isReportSafeWithDampener, parseInput } from "./index.ts";
 import { dirname } from "@std/path/dirname";
 import { fromFileUrl } from "@std/path/from-file-url";
 import { join } from "@std/path/join";
