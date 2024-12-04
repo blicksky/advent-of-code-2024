@@ -6,74 +6,51 @@ export function parseInput(input: string): WordSearch {
 }
 
 export function part1(input: WordSearch) {
-  let count = 0;
-  for (let i = 0; i < input.length; i++) {
-    for (let j = 0; j < input[i].length; j++) {
-      if (input[i][j] === "X") {
-        // Check right
-        if (
-          j + 3 < input[i].length && input[i][j + 1] === "M" &&
-          input[i][j + 2] === "A" && input[i][j + 3] === "S"
-        ) {
-          count++;
-        }
-        // Check left
-        if (
-          j - 3 >= 0 && input[i][j - 1] === "M" && input[i][j - 2] === "A" &&
-          input[i][j - 3] === "S"
-        ) {
-          count++;
-        }
-        // Check down
-        if (
-          i + 3 < input.length && input[i + 1][j] === "M" &&
-          input[i + 2][j] === "A" && input[i + 3][j] === "S"
-        ) {
-          count++;
-        }
-        // Check up
-        if (
-          i - 3 >= 0 && input[i - 1][j] === "M" && input[i - 2][j] === "A" &&
-          input[i - 3][j] === "S"
-        ) {
-          count++;
-        }
-        // Check diagonal down-right
-        if (
-          i + 3 < input.length && j + 3 < input[i].length &&
-          input[i + 1][j + 1] === "M" && input[i + 2][j + 2] === "A" &&
-          input[i + 3][j + 3] === "S"
-        ) {
-          count++;
-        }
-        // Check diagonal down-left
-        if (
-          i + 3 < input.length && j - 3 >= 0 &&
-          input[i + 1][j - 1] === "M" && input[i + 2][j - 2] === "A" &&
-          input[i + 3][j - 3] === "S"
-        ) {
-          count++;
-        }
-        // Check diagonal up-right
-        if (
-          i - 3 >= 0 && j + 3 < input[i].length &&
-          input[i - 1][j + 1] === "M" && input[i - 2][j + 2] === "A" &&
-          input[i - 3][j + 3] === "S"
-        ) {
-          count++;
-        }
-        // Check diagonal up-left
-        if (
-          i - 3 >= 0 && j - 3 >= 0 &&
-          input[i - 1][j - 1] === "M" && input[i - 2][j - 2] === "A" &&
-          input[i - 3][j - 3] === "S"
-        ) {
-          count++;
-        }
+  const directions: ReadonlyArray<readonly [number, number]> = [
+    [0, 1], // right
+    [0, -1], // left
+    [1, 0], // down
+    [-1, 0], // up
+    [1, 1], // diagonal down-right
+    [1, -1], // diagonal down-left
+    [-1, 1], // diagonal up-right
+    [-1, -1], // diagonal up-left
+  ] as const;
+
+  function checkXMAS(
+    startRow: number,
+    startCol: number,
+    deltaRow: number,
+    deltaCol: number,
+  ): boolean {
+    const pattern = ["X", "M", "A", "S"] as const;
+
+    for (let position = 0; position < 4; position++) {
+      const currentRow = startRow + position * deltaRow;
+      const currentCol = startCol + position * deltaCol;
+
+      if (
+        currentRow < 0 || currentRow >= input.length ||
+        currentCol < 0 || currentCol >= input[0].length ||
+        input[currentRow][currentCol] !== pattern[position]
+      ) {
+        return false;
       }
     }
+    return true;
   }
-  return count;
+
+  return input.reduce(
+    (count, row, rowIndex) =>
+      count +
+      row.reduce((rowCount, cell, colIndex) =>
+        cell === "X"
+          ? rowCount + directions.reduce((dirCount, [deltaRow, deltaCol]) =>
+            dirCount +
+            (checkXMAS(rowIndex, colIndex, deltaRow, deltaCol) ? 1 : 0), 0)
+          : rowCount, 0),
+    0,
+  );
 }
 
 export function part2(input: WordSearch) {
