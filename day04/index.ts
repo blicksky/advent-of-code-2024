@@ -1,20 +1,32 @@
-export type Letter = "X" | "M" | "A" | "S";
-export type WordSearch = Letter[][];
+type Letter = "X" | "M" | "A" | "S";
+type WordSearch = Letter[][];
+type DirectionValue = -1 | 0 | 1;
+type Direction = readonly [DirectionValue, DirectionValue];
+type DirectionPair = readonly [Direction, Direction];
+
+const RIGHT: Direction = [0, 1];
+const LEFT: Direction = [0, -1];
+const DOWN: Direction = [1, 0];
+const UP: Direction = [-1, 0];
+const DOWN_RIGHT: Direction = [1, 1];
+const DOWN_LEFT: Direction = [1, -1];
+const UP_RIGHT: Direction = [-1, 1];
+const UP_LEFT: Direction = [-1, -1];
 
 export function parseInput(input: string): WordSearch {
   return input.split("\n").map((line) => line.split("") as Letter[]);
 }
 
 export function part1(input: WordSearch) {
-  const directions: ReadonlyArray<readonly [number, number]> = [
-    [0, 1], // right
-    [0, -1], // left
-    [1, 0], // down
-    [-1, 0], // up
-    [1, 1], // diagonal down-right
-    [1, -1], // diagonal down-left
-    [-1, 1], // diagonal up-right
-    [-1, -1], // diagonal up-left
+  const directions: ReadonlyArray<Direction> = [
+    RIGHT,
+    LEFT,
+    DOWN,
+    UP,
+    DOWN_RIGHT,
+    DOWN_LEFT,
+    UP_RIGHT,
+    UP_LEFT,
   ] as const;
 
   function checkXMAS(
@@ -54,6 +66,48 @@ export function part1(input: WordSearch) {
 }
 
 export function part2(input: WordSearch) {
-  // TODO: Implement part 2
-  return 0;
+  const diagonals: ReadonlyArray<DirectionPair> = [
+    [DOWN_RIGHT, UP_LEFT],
+    [DOWN_LEFT, UP_RIGHT],
+  ] as const;
+
+  function checkMAS(
+    startRow: number,
+    startCol: number,
+    diagonal: DirectionPair,
+  ): boolean {
+    const [delta1, delta2] = diagonal;
+    const row1 = startRow + delta1[0];
+    const col1 = startCol + delta1[1];
+    const row2 = startRow + delta2[0];
+    const col2 = startCol + delta2[1];
+
+    if (
+      row1 < 0 || row1 >= input.length || col1 < 0 || col1 >= input[0].length ||
+      row2 < 0 || row2 >= input.length || col2 < 0 || col2 >= input[0].length
+    ) {
+      return false;
+    }
+
+    // Check if we have M in one direction and S in the other
+    return (input[row1][col1] === "M" && input[row2][col2] === "S") ||
+      (input[row1][col1] === "S" && input[row2][col2] === "M");
+  }
+
+  let count = 0;
+  for (let row = 0; row < input.length; row++) {
+    for (let col = 0; col < input[0].length; col++) {
+      if (input[row][col] === "A") {
+        // For each A, check both diagonal pairs
+        const matches = diagonals.map((diagonal) =>
+          checkMAS(row, col, diagonal)
+        );
+        // Only count if both diagonal pairs form valid MAS patterns
+        if (matches.every((match) => match)) {
+          count++;
+        }
+      }
+    }
+  }
+  return count;
 }

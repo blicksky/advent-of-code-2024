@@ -22,10 +22,10 @@ Deno.test("solves input for part 1", async () => {
 
 Deno.test("solves example for part 2", async () => {
   const input = await readPuzzleFile("example.txt");
-  assertEquals(part2(input), 0);
+  assertEquals(part2(parseInput(input)), 9);
 });
 
 Deno.test("solves input for part 2", async () => {
   const input = await readPuzzleFile("input.txt");
-  assertEquals(part2(input), 0);
+  assertEquals(part2(parseInput(input)), 1831);
 });
