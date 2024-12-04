@@ -1,6 +1,5 @@
 export function executeCorruptedProgram(program: string) {
-  return program
-    .matchAll(/mul\(\d{1,3},\d{1,3}\)/g)
+  return [...program.matchAll(/mul\(\d{1,3},\d{1,3}\)/g)]
     .map((instructionMatch) => {
       const [instruction] = instructionMatch;
       const [operand1, operand2] = instruction

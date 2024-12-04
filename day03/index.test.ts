@@ -6,6 +6,7 @@ import {
   removeDisabledInstructions,
 } from "./index.ts";
 import { assertEquals } from "@std/assert/equals";
+import { sum } from "../common/index.ts";
 
 const puzzleDir = dirname(fromFileUrl(import.meta.url));
 
@@ -15,37 +16,26 @@ const readPuzzleFile = async (fileName: string): Promise<string> => {
 
 Deno.test("solves example for part 1", async () => {
   const input = await readPuzzleFile("example.txt");
-
-  assertEquals(executeCorruptedProgram(input).reduce((a, b) => a + b), 161);
+  assertEquals(sum(executeCorruptedProgram(input)), 161);
 });
 
 Deno.test("solves input for part 1", async () => {
   const input = await readPuzzleFile("input.txt");
-
-  assertEquals(
-    executeCorruptedProgram(input).reduce((a, b) => a + b),
-    192767529,
-  );
+  assertEquals(sum(executeCorruptedProgram(input)), 192767529);
 });
 
 Deno.test("solves example for part 2", async () => {
   const input = await readPuzzleFile("example2.txt");
-
   assertEquals(
-    executeCorruptedProgram(removeDisabledInstructions(input)).reduce((a, b) =>
-      a + b
-    ),
+    sum(executeCorruptedProgram(removeDisabledInstructions(input))),
     48,
   );
 });
 
 Deno.test("solves input for part 2", async () => {
   const input = await readPuzzleFile("input.txt");
-
   assertEquals(
-    executeCorruptedProgram(removeDisabledInstructions(input)).reduce((a, b) =>
-      a + b
-    ),
+    sum(executeCorruptedProgram(removeDisabledInstructions(input))),
     104083373,
   );
 });

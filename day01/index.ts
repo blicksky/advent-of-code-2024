@@ -1,3 +1,5 @@
+import { sum } from "../common/index.ts";
+
 export function parseInput(input: string): [number[], number[]] {
   const leftList: number[] = [];
   const rightList: number[] = [];
@@ -19,11 +21,10 @@ export function calculateTotalDistanceBetweenLists(
   const sortedLeftList = leftList.sort((a, b) => a - b);
   const sortedRightList = rightList.sort((a, b) => a - b);
 
-  return sortedLeftList
+  return sum(sortedLeftList
     .map((leftItem, index) => {
       return Math.abs(leftItem - sortedRightList[index]);
-    })
-    .reduce((sum, distance) => sum + distance, 0);
+    }));
 }
 
 function buildOccurrenceMap(list: number[]): Map<number, number> {
@@ -40,8 +41,7 @@ export function calculateSimilarityScore(
 ): number {
   const rightOccurrenceMap = buildOccurrenceMap(rightList);
 
-  return leftList.reduce((totalScore, item) => {
-    const score = item * (rightOccurrenceMap.get(item) ?? 0);
-    return totalScore + score;
-  }, 0);
+  return sum(
+    leftList.map((item) => item * (rightOccurrenceMap.get(item) ?? 0)),
+  );
 }
