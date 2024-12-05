@@ -17,9 +17,11 @@ Deno.test("part 1 - input", () => {
 });
 
 Deno.test("part 2 - example", () => {
-  assertEquals(part2(example), 0);
+  const parsedInput = parseInput(example);
+  assertEquals(part2(parsedInput), 123);
 });
 
 Deno.test("part 2 - input", () => {
-  assertEquals(part2(input), 0);
+  const parsedInput = parseInput(input);
+  assertEquals(part2(parsedInput), 6767);
 });

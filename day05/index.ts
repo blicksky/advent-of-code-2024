@@ -62,6 +62,23 @@ export function part1({ rules, manuals }: ParsedInput): number {
   return sum(correctManuals.map(getMiddlePage));
 }
 
-export function part2(input: string): number {
-  return 0;
+export function part2({ rules, manuals }: ParsedInput): number {
+  const orderingRulesMap = buildOrderingRulesMap(rules);
+
+  const updatedManuals = manuals.reduce<Manual[]>(
+    (sortedManuals, manual) => {
+      const sortedManual = manual.toSorted((a, b) =>
+        orderingRulesMap.get(a)?.includes(b) ? -1 : 0
+      );
+
+      if (!areManualsEqual(manual, sortedManual)) {
+        sortedManuals.push(sortedManual);
+      }
+
+      return sortedManuals;
+    },
+    [],
+  );
+
+  return sum(updatedManuals.map(getMiddlePage));
 }
