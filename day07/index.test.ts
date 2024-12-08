@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
-import { parseInput, part1 } from "./index.ts";
+import { parseInput, part1, part2 } from "./index.ts";
 
 const example = await Deno.readTextFile(
   new URL("./example.txt", import.meta.url),
@@ -32,15 +32,15 @@ Deno.test("part 1 - example", () => {
 
 Deno.test("part 1 - input", () => {
   const lab = parseInput(input);
-  assertEquals(part1(lab), 5153);
+  assertEquals(part1(lab), 303876485655);
 });
 
-// Deno.test("part 2 - example", () => {
-//   const parsedInput = parseInput(example);
-//   assertEquals(part2(parsedInput), 6);
-// });
+Deno.test("part 2 - example", () => {
+  const parsed = parseInput(example);
+  assertEquals(part2(parsed), 11387);
+});
 
-// Deno.test("part 2 - input", () => {
-//   const parsedInput = parseInput(input);
-//   assertEquals(part2(parsedInput), 6767);
-// });
+Deno.test("part 2 - input", () => {
+  const lab = parseInput(input);
+  assertEquals(part2(lab), 146111650210682);
+});
