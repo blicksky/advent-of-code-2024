@@ -34,12 +34,13 @@ function equationCanBeTrue(
     );
   }
 
-  return operators.some((operator) =>
-    equationCanBeTrue({
+  return operators.some((operator) => {
+    const result = operator(operand1, operand2);
+    return result <= equation.testValue && equationCanBeTrue({
       testValue: equation.testValue,
-      operands: [operator(operand1, operand2), ...remainingOperands],
-    }, operators)
-  );
+      operands: [result, ...remainingOperands],
+    }, operators);
+  });
 }
 
 export const part1 = (equations: Equation[]) => {
